@@ -20,7 +20,6 @@ public class Robot extends TimedRobot {
   public Drivetrain drivetrain;
   public Catapult catapult;
   //public LedSubsystem ledsubsystem;
-  public ColorSensor cs;
   /**
    *
    * This function is run when the robot is first started up and should be used for any
@@ -31,7 +30,6 @@ public class Robot extends TimedRobot {
       controller = new Joystick(1);
       drivetrain = new Drivetrain();
       catapult = new Catapult(this);
-      cs = new ColorSensor();
   }
 
   @Override
@@ -78,11 +76,12 @@ public class Robot extends TimedRobot {
     }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+      catapult.SetRetracting();
+  }
 
   @Override
   public void disabledPeriodic() {
-    cs.stopMotor();
   }
 
   @Override
