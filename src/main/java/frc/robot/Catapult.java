@@ -11,7 +11,7 @@ public class Catapult extends SubsystemBase {
     CANSparkMax motor;
     ShuffleboardTab tab;
     static State state = State.Retracted;
-    private double launchAngle = 8;
+    private double launchAngle = 7;
 
     public Catapult(Robot robot){
         motor = new CANSparkMax(5, MotorType.kBrushless);
