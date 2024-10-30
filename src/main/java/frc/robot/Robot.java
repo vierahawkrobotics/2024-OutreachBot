@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Catapult;
-
+import frc.robot.Catapult.State;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -19,6 +19,7 @@ public class Robot extends TimedRobot {
   public Joystick controller;
   public Drivetrain drivetrain;
   public Catapult catapult;
+  private boolean catapultSafety = true;
   //public LedSubsystem ledsubsystem;
   /**
    *
@@ -48,7 +49,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    drivetrain.Set(-controller.getY(), controller.getZ());
+    if((catapult.getState() == State.Retracted || catapult.getState() == State.Extended) && catapultSafety == true) {drivetrain.Set(-controller.getY(), controller.getZ());}
+    else {drivetrain.Set(0,0);}
     if(controller.getRawButtonPressed(1)) {
       catapult.SetExtending();
       catapult.SetRetracting();

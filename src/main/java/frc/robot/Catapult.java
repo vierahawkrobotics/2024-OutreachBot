@@ -10,7 +10,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Catapult extends SubsystemBase {
     CANSparkMax motor;
     ShuffleboardTab tab;
-    State state = State.Retracted;
+    static State state = State.Retracted;
+    private double launchAngle = 8;
 
     public Catapult(Robot robot){
         motor = new CANSparkMax(5, MotorType.kBrushless);
@@ -22,6 +23,11 @@ public class Catapult extends SubsystemBase {
         tab.addDouble("Current Position", () -> {return motor.getEncoder().getPosition();});
         robot.addPeriodic(() -> {periodic(robot);}, 0.005);
     }
+    //sets launch angle (float launch angle) 0<v<20
+    private void setLaunchAngle(double desiredLaunchAngle){
+        if (desiredLaunchAngle < 20 && desiredLaunchAngle > 0) launchAngle = desiredLaunchAngle;
+    }
+    
     private void periodic(Robot robot) {
         double pos = motor.getEncoder().getPosition();
         switch(state) {
@@ -31,7 +37,7 @@ public class Catapult extends SubsystemBase {
             break;
         case Extending:
             motor.set(10);
-            if(pos > 7) state = State.Extended;
+            if(pos > launchAngle) state = State.Extended;
             break;
         case Retracted:
         case Extended:
@@ -40,7 +46,9 @@ public class Catapult extends SubsystemBase {
             break;
         }
     }
-
+    public State getState() {
+        return state;
+    }
     public void SetExtending() {
         if(state != State.Retracted) return;
         state = State.Extending;
