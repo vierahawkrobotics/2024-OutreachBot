@@ -22,7 +22,10 @@ public class Catapult extends SubsystemBase {
         tab.addDouble("Current Position", () -> {return motor.getEncoder().getPosition();});
         robot.addPeriodic(() -> {periodic(robot);}, 0.005);
     }
-    private void periodic(Robot robot) {
+
+
+
+    public void periodic(Robot robot) {
         double pos = motor.getEncoder().getPosition();
         switch(state) {
         case Retracting:
@@ -30,15 +33,25 @@ public class Catapult extends SubsystemBase {
             if(pos < 1) state = State.Retracted;
             break;
         case Extending:
+            int sMEOWWW = 7;
             motor.set(10);
-            if(pos > 7) state = State.Extended;
+            if(pos > sMEOWWW) state = State.Extended;
+            setArmPosition(pos);
             break;
         case Retracted:
+            
+            Drivetrain.maxSpeed = 8;
         case Extended:
+            Drivetrain.maxSpeed = 0;
         default:
             motor.set(0);
             break;
         }
+           
+    }
+
+    public void setArmPosition(double cat){
+        System.out.println(cat);
     }
 
     public void SetExtending() {

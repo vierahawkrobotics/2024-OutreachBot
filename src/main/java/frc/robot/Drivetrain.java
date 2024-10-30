@@ -17,7 +17,7 @@ public class Drivetrain {
     private TalonSRX leftFollower;
     private TalonSRX rightLeader;
     private TalonSRX rightFollower;
-    private double maxSpeed;
+    public static double maxSpeed;
     private double maxTurnSpeed;
     private double deadzone;
     private PIDController pidLeft;
@@ -41,8 +41,7 @@ public class Drivetrain {
         leftFollower.setInverted(InvertType.FollowMaster);
         rightFollower.setInverted(InvertType.FollowMaster);
 
-        maxSpeed = 0.8;
-        maxTurnSpeed = 1.3;
+        maxTurnSpeed = -1.3;
         deadzone = 0.25;
 
         pidLeft = new PIDController(.4, 0,0);
