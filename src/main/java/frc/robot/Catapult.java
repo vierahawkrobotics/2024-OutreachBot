@@ -3,6 +3,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -11,6 +12,11 @@ public class Catapult extends SubsystemBase {
     CANSparkMax motor;
     ShuffleboardTab tab;
     State state = State.Retracted;
+    final private double HAMBURGER_SHOOT_MAX = 10;
+    private double launchAngle = 0;
+    XboxController control1 = new XboxController(1);
+    test = Shuffleboard.getTab("Test");
+    test.
 
     public Catapult(Robot robot){
         motor = new CANSparkMax(5, MotorType.kBrushless);
@@ -24,6 +30,7 @@ public class Catapult extends SubsystemBase {
     }
     private void periodic(Robot robot) {
         double pos = motor.getEncoder().getPosition();
+        setArmPosition();
         switch(state) {
         case Retracting:
             motor.set(-0.2);
@@ -31,7 +38,7 @@ public class Catapult extends SubsystemBase {
             break;
         case Extending:
             motor.set(10);
-            if(pos > 7) state = State.Extended;
+            if(pos > launchAngle) state = State.Extended;
             break;
         case Retracted:
         case Extended:
@@ -40,7 +47,6 @@ public class Catapult extends SubsystemBase {
             break;
         }
     }
-
     public void SetExtending() {
         if(state != State.Retracted) return;
         state = State.Extending;
@@ -49,8 +55,15 @@ public class Catapult extends SubsystemBase {
         if(state != State.Extended) return;
         state = State.Retracting;
     }
-     
-
+    public void setArmPosition() {
+        if (launchAngle <= HAMBURGER_SHOOT_MAX && launchAngle >= 0) {
+            if (control1.getAButton()) {
+                launchAngle += .1;
+            } else if (control1.getYButton()) {
+                launchAngle -= 1;
+            }
+        }
+    }
     public enum State {
         Retracting,
         Retracted,
