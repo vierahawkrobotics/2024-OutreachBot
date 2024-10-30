@@ -41,7 +41,7 @@ public class Drivetrain {
         leftFollower.setInverted(InvertType.FollowMaster);
         rightFollower.setInverted(InvertType.FollowMaster);
 
-        maxSpeed = 999999999;
+        maxSpeed = 1;
         maxTurnSpeed = -1.3;
         deadzone = 0.25;
 
