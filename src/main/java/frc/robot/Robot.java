@@ -7,6 +7,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Catapult;
 
 /**
@@ -14,11 +17,14 @@ import frc.robot.Catapult;
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
+ * 
+ * adfjasd;lfjasd;lfjk
  */
 public class Robot extends TimedRobot {
   public Joystick controller;
   public Drivetrain drivetrain;
   public Catapult catapult;
+  private int shift;
   //public LedSubsystem ledsubsystem;
   /**
    *
@@ -30,6 +36,7 @@ public class Robot extends TimedRobot {
       controller = new Joystick(1);
       drivetrain = new Drivetrain();
       catapult = new Catapult(this);
+      Shuffleboard.getTab("Catapult Position").addDouble("Direction",()->{return controller.getPOV();});
   }
 
   @Override
@@ -49,9 +56,22 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     drivetrain.Set(-controller.getY(), controller.getZ());
-    if(controller.getRawButtonPressed(1)) {
+    int dir = controller.getPOV();
+    if(controller.getRawButtonPressed(4)){
       catapult.SetExtending();
+    }
+    if(controller.getRawButtonPressed(2)){
       catapult.SetRetracting();
+    }
+    if(controller.getRawButtonPressed(1)) {
+      catapult.shoot();
+    }
+    if(dir == 270 && shift !=-1){
+      shift=-1;
+      catapult.cycleFocus(-1);
+    } else if(dir == 90 && shift!=1){
+      shift=1;
+      catapult.cycleFocus(1);
     }
     
     /*   cs.checkIRandProximity();
