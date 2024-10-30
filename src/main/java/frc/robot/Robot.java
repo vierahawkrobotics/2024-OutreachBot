@@ -52,7 +52,8 @@ public class Robot extends TimedRobot {
     if(controller.getRawButtonPressed(1)) {
       catapult.SetExtending();
       catapult.SetRetracting();
-    }
+      //i liek fortnite
+    } 
     
     /*   cs.checkIRandProximity();
       cs.putDatainSmartDashboard();
