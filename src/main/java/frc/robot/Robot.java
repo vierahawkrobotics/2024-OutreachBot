@@ -66,6 +66,9 @@ public class Robot extends TimedRobot {
     if(controller.getRawButtonPressed(1)) {
       catapult.shoot();
     }
+    if(controller.getRawButton(10)){
+      catapult.resetEncoder();
+    }
     if(dir == 270 && shift !=-1){
       shift=-1;
       catapult.cycleFocus(-1);

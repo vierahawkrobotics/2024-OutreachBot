@@ -42,7 +42,7 @@ public class Drivetrain {
         rightFollower.setInverted(InvertType.FollowMaster);
 
         maxSpeed = 0.8;
-        maxTurnSpeed = 3.0;
+        maxTurnSpeed = 1.7;
         deadzone = 0.25;
 
         pidLeft = new PIDController(.4, 0,0);

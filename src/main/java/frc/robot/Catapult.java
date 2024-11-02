@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Catapult extends SubsystemBase {
@@ -25,7 +26,7 @@ public class Catapult extends SubsystemBase {
     private List<Double> angleSet=Arrays.asList(45d,90d);
 
     public int mod(int n,int m){
-        return (n<0)?(n%m+m):n%m;
+        return ((n<0)?((n%m)+m):n%m)%m;
     }
     public Catapult(Robot robot){
         //Set up motor settings
@@ -40,10 +41,10 @@ public class Catapult extends SubsystemBase {
         tab = Shuffleboard.getTab("Catapult Position");
         tab.addDouble("Current Position", () -> {return motor.getEncoder().getPosition();});
         tab.addString("State", ()->{return state.toString();});
-        tab.addString("Angle Queue",()->{return String.format("%d <- %d -> %d",angleSet.get(mod(index-1,len)),angleSet.get(index),angleSet.get(mod(index+1,len)));});
+        tab.addString("Angle Queue",()->{return String.format("%.1f <- %.1f -> %.1f",angleSet.get(mod(index-1,len)),angleSet.get(index),angleSet.get(mod(index+1,len)));});
         alternateValue=tab.add("Do Alternate Value", false).getEntry();
-        controlDegrees=tab.add("Arm Max Angle", 60).getEntry();
-        controlPower=tab.add("Arm Power",10).getEntry();
+        controlDegrees=tab.add("Arm Max Angle", 45).getEntry();
+        controlPower=tab.add("Arm Power",1.2).getEntry();
         robot.addPeriodic(() -> {periodic(robot);}, 0.005);
 
         
@@ -111,7 +112,7 @@ public class Catapult extends SubsystemBase {
         motor.getEncoder().setPosition(0);
     }
     public void cycleFocus(int direction){
-        index=(index+direction+angleSet.size())%angleSet.size();
+        index=mod(index+direction,angleSet.size());
         controlDegrees.setDouble(angleSet.get(index));
     }
      
