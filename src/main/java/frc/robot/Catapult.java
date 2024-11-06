@@ -15,7 +15,8 @@ public class Catapult extends SubsystemBase {
     final private double HAMBURGER_SHOOT_MAX = 10;
     private double launchAngle = 0;
     XboxController control1 = new XboxController(1);
-    ShuffleboardTab test = Shuffleboard.getTab("Test");
+    ShuffleboardTab General = Shuffleboard.getTab("Test");
+    General.putNumber("Shoot Angle", launchAngle)
 
     public Catapult(Robot robot){
         motor = new CANSparkMax(5, MotorType.kBrushless);
