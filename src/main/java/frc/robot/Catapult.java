@@ -12,16 +12,13 @@ public class Catapult extends SubsystemBase {
     CANSparkMax motor;
     ShuffleboardTab tab;
     State state = State.Retracted;
-    final private double HAMBURGER_SHOOT_MAX = 10;
-    private double launchAngle = 0;
-    XboxController control1 = new XboxController(1);
-    ShuffleboardTab General = Shuffleboard.getTab("Test");
-    General.putNumber("Shoot Angle", launchAngle)
+    final private double HAMBURGER_SHOOT_MAX = 45;
+    private double curLaunchAngle = 0;
+    XboxController controller1 = new XboxController(1);
 
     public Catapult(Robot robot){
         motor = new CANSparkMax(5, MotorType.kBrushless);
         motor.restoreFactoryDefaults();
-        //`motor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 5);
         motor.setIdleMode(IdleMode.kBrake);
         tab = Shuffleboard.getTab("Catapult Position");
         motor.setInverted(true);
@@ -37,8 +34,8 @@ public class Catapult extends SubsystemBase {
             if(pos < 1) state = State.Retracted;
             break;
         case Extending:
-            motor.set(10);
-            if(pos > launchAngle) state = State.Extended;
+            motor.set(.2);
+            if(pos > curLaunchAngle) state = State.Extended;
             break;
         case Retracted:
         case Extended:
@@ -56,12 +53,13 @@ public class Catapult extends SubsystemBase {
         state = State.Retracting;
     }
     public void setArmPosition() {
-        if (launchAngle <= HAMBURGER_SHOOT_MAX && launchAngle >= 0) {
-            if (control1.getAButton()) {
-                launchAngle += .1;
-            } else if (control1.getYButton()) {
-                launchAngle -= 1;
+        if (curLaunchAngle <= HAMBURGER_SHOOT_MAX && curLaunchAngle >= 0) {
+            if (controller1.getAButton()) {
+                curLaunchAngle += .1;
+            } else if (controller1.getYButton()) {
+                curLaunchAngle -= .1;
             }
+            tab.addDouble("Launch Angle", () -> curLaunchAngle);
         }
     }
     public enum State {

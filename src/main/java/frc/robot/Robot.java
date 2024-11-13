@@ -46,11 +46,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    drivetrain.Set(-controller.getY(), controller.getZ());
-    if(controller.getRawButtonPressed(1)) {
-      catapult.SetExtending();
-      catapult.SetRetracting();
-    }
+    // drivetrain.Set(-controller.getY(), controller.getZ());
+    // if(controller.getRawButtonPressed(1)) {
+    //   catapult.SetExtending();
+    //   catapult.SetRetracting();
+    // }
     
     /*   cs.checkIRandProximity();
       cs.putDatainSmartDashboard();
