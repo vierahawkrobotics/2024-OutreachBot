@@ -39,6 +39,8 @@ public class Catapult extends SubsystemBase {
         default:
             motor.set(0);
             break;
+
+            
         }
     }
 
