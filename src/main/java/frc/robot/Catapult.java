@@ -31,7 +31,7 @@ public class Catapult extends SubsystemBase {
             if(pos < 1) state = State.Retracted;
             break;
         case Extending:
-            motor.set(10);
+            motor.set(5);
             if(pos > 7) state = State.Extended;
             break;
         case Retracted:
