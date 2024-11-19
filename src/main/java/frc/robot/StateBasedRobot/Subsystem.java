@@ -2,8 +2,8 @@ package frc.robot.StateBasedRobot;
 
 public class Subsystem {
     
-    private int state = 0;
+    // private int state = 0;
     public final void SetState(int state) {
-        this.state = state;
+        // this.state = state;
     }
 }
